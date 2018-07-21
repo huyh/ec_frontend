@@ -7,10 +7,12 @@ import TvShow from "./TvShow";
 @observer
 class TvShowList extends React.Component {
   render() {
+    const tvShows = this.props.store.tvShows;
+
     return (
       <div>
         <ul>
-          {this.props.store.tvShows.map(tvShow => (
+          {tvShows.map(tvShow => (
             <TvShow tvShow={tvShow} key={tvShow.id} />
           ))}
         </ul>

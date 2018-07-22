@@ -1,16 +1,27 @@
 import { observable, computed, action } from "mobx";
 
 import TvShowModel from "./TvShowModel";
+import TvShowService from "../services/TvShowService";
 
 export default class TvShowListModel {
   @observable tvShows = [];
 
+  constructor() {
+    this.tvShowService = new TvShowService();
+  }
+
+  @computed
+  get watchlistCount() {
+    return this.tvShows.filter(tvShow => tvShow.watchlist).length;
+  }
+
+  @computed
+  get favoriteCount() {
+    return this.tvShows.filter(tvShow => tvShow.favorite).length;
+  }
+
   @action
   fetchTvShow(query) {
-    fetch(`http://localhost:3000/api/tv_shows?query=${query}`, {
-      method: 'get'
-    }).then(response => response.json())
-      .then(jsonData => this.tvShows = jsonData)
-      .catch(err => console.log(err));
+    this.tvShowService.fetchTvShow(query, (jsonData) => this.tvShows = jsonData);
   }
 }
